@@ -13,10 +13,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
     try {
-        client.connect()
-        //const sql = "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND  schemaname != 'information_schema';"
         const sql = 'SELECT "title", "url", "content" FROM public."Posts";';
-        //const sql = 'SELECT  NOW();'
         client.query(sql, (err, response) => {
             if (err) {
                 console.log(err.stack);
@@ -25,7 +22,6 @@ app.get('/', (req, res) => {
                 console.log(response.rows)
                 res.render('posts/index', { posts: response.rows } );
             }
-            client.end();
         });
     }
     catch (e) {

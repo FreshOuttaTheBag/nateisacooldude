@@ -8,4 +8,6 @@ const client = new Client({
     port: process.env.DBPORT,
 })
 
+client.connect();
+
 module.exports = client;

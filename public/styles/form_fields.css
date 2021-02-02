@@ -1,0 +1,40 @@
+.box2 {
+    width: fit-content;
+    padding: 1px ;
+    border: 2px solid#212529;;
+    margin: 2px;
+    text-align: center;
+    color: #212529;
+    position: relative;
+    left: 18px;
+    z-index: 2;
+}
+
+.sb11:before {
+    content: "";
+    width: 0px;
+    height: 0px;
+    position: absolute;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #212529;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    left: -22px;
+    z-index: 2;
+}
+
+.hide {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.2s linear;
+}
+
+.unhide {
+    visibility: visible;
+}
+
+svg:hover  + .hide  {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}

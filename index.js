@@ -9,6 +9,7 @@ const db = require("./db/index.js");
 
 app.use(express.urlencoded({extended: false}));
 app.use(bp.json());
+app.use(express.static('public'))
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {

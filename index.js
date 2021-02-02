@@ -5,7 +5,7 @@ const app = express();
 const articleRouter = require('./routes/posts');
 const port = 8000;
 const bc = require('bcrypt');
-const client = require("./db/init.js");
+const db = require("./db/index.js");
 
 app.use(express.urlencoded({extended: false}));
 app.use(bp.json());
@@ -14,12 +14,11 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => {
     try {
         const sql = 'SELECT "title", "url", "content" FROM public."Posts";';
-        client.query(sql, (err, response) => {
+        db.query(sql, (err, response) => {
             if (err) {
                 console.log(err.stack);
             }
             else {
-                console.log(response.rows)
                 res.render('posts/index', { posts: response.rows } );
             }
         });

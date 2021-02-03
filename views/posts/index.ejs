@@ -13,13 +13,13 @@
       <h1>Nate Is a Cool Dude:</h1>
       <h2>A site dedicated to nateposting</h2>
       <a href="posts/new" class="btn btn-primary" style="margin-top: 10px;">Start Nateposting!</a>
-    <hr style="margin-bottom: 10px">
     </div>
+    <hr style="margin-bottom: 10px">
     
     <div class="row justify-content-center">
     <% posts.forEach(post => { %>
         <div class="card pictureCard" style="width: 18rem;">
-            <img src="<%= post.url %>" class="card-img-top" onerror="this.onerror=null; this.src='/pictures/image-not-found.png'">
+            <img src="<%= post.url %>" class="card-img-top postPictures" onerror="this.onerror=null; this.src='/pictures/image-not-found.png'">
             <div class="card-body">
               <h5 class="card-title"><%=post.title%></h5>
               <p class="card-text"><%=post.content %></p>
@@ -34,7 +34,7 @@
     </h1>
     <h2 style="text-align: center;">
       Goodbye!
-    <h2>
+    </h2>
 
     <!-- BS JavaScript Bundle with Popper (and jquery) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

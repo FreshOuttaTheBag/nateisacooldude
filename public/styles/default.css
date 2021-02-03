@@ -13,3 +13,21 @@
     border-color: #007bff;
     transform: scale(1.05);
   }
+
+  .house {
+    position: relative; 
+    left: 20px; 
+    top: 20px;
+    color: #212529;
+    transition: 0.3s;
+}
+
+.house:hover {
+    color: #007bff;
+    margin: 0px;
+}
+
+.postPictures {
+  max-height: 300px;
+  overflow: hidden;
+}

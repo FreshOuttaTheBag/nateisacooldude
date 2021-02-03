@@ -33,7 +33,7 @@
     visibility: visible;
 }
 
-svg:hover  + .hide  {
+#urlquestion:hover  + .hide  {
     display: block;
     visibility: visible;
     opacity: 1;

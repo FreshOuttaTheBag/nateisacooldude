@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
     try {
-        const sql = 'SELECT "title", "url", "content" FROM public."Posts";';
+        const sql = 'SELECT "title", "url", "content" FROM public."Posts" ORDER BY "id" DESC;';
         db.query(sql, (err, response) => {
             if (err) {
                 console.log(err.stack);

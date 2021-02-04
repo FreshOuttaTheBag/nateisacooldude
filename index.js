@@ -6,10 +6,12 @@ const articleRouter = require('./routes/posts');
 const port = 8000;
 const bc = require('bcrypt');
 const db = require("./db/index.js");
+const favicon = require("serve-favicon");
 
 app.use(express.urlencoded({extended: false}));
 app.use(bp.json());
 app.use(express.static('public'))
+app.use(favicon('./public/icon.gif'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {

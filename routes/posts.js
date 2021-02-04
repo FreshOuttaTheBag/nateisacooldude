@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require("../db/index.js");
-const slugify = require('slugify');
 
 router.get('/new', (req, res) => {
     res.render('posts/new');
@@ -10,6 +9,7 @@ router.get('/new', (req, res) => {
 router.get('/:id', (req, res) => {
     const sql = 'SELECT "title","url","content" FROM "Posts" WHERE "id" = $1 LIMIT 1;';
     const values = [req.params.id];
+    console.log(values);
     db.query(sql, values, (err, response) => {
         if (err) {
             console.log(err.stack);

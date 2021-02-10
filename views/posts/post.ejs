@@ -15,8 +15,6 @@
         transform: scale(1.03);
     }
 
-
-
     .box {
         background-color: #EEEEEE;
         border-top: solid 2px #CCCCCC;
@@ -25,6 +23,7 @@
         height: auto;
         width: 100%;
         margin: 0px;
+        transition: 0.4s;
         -webkit-transition: 0.4s;
         -moz-transition: 0.4s;
         -o-transition: 0.4s;
@@ -53,11 +52,10 @@
             <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5z"/>
         </svg>
     </a>  
+
     <div class="box" id="box" style="text-align: center;">
-        
         <h1><%= post.title%></h1>
         <img src="<%= post.url%>" id="pageImage">
-
         <h4><%= post.content%></h4>
     </div>
 
@@ -84,7 +82,6 @@
     <script>
         $("#pageImage").hover(() => {
             $("#box").toggleClass("box-hovered");
-            //document.getElementById("box").classList.add("box-hovered");
         })
     </script>
 </html>

@@ -1,18 +1,37 @@
 require('dotenv').config()
 const express = require("express");
-const bp = require("body-parser");
 const app = express();
 const articleRouter = require('./routes/posts');
-const port = 8000;
-const bc = require('bcrypt');
+const authRouter = require('./routes/auth');
 const db = require("./db/index.js");
 const favicon = require("serve-favicon");
+const methodOverride = require("method-override");
 
+
+const passport = require('passport')
+const initializePassport = require('./auth/passport-config');
+initializePassport(passport)
+const flash = require('express-flash');
+const session = require('express-session')
+app.use(flash());
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(methodOverride('_method'))
 app.use(express.urlencoded({extended: false}));
-app.use(bp.json());
 app.use(express.static('public'))
 app.use(favicon('./public/icon.gif'));
 app.set('view engine', 'ejs');
+
+app.use('/posts', articleRouter);
+app.use('/auth', authRouter);
+
+const port = 8000 || process.env.PORT;
 
 app.get('/', (req, res) => {
     try {
@@ -22,7 +41,12 @@ app.get('/', (req, res) => {
                 console.log(err.stack);
             }
             else {
-                res.render('posts/index', { posts: response.rows } );
+                let user = undefined;
+                if (req.isAuthenticated())
+                {
+                    user = req.user;
+                }
+                res.render('posts/index', { posts: response.rows, user: user } );
             }
         });
     }
@@ -31,41 +55,11 @@ app.get('/', (req, res) => {
     }
 });
 
-app.post('/users', async (req, res) => {
-    try {
-        const hashedPassword = await bcrypt.has(req.body.password, 10);
-        console.log(salt);
-        console.log(hashedPassword);
-    }
-    catch
-    {
-        res.status(500).send();
-    }
-});
-
-app.post('/users/login', async (req, res) => {
-    /* const user = users.find(user => user.name === req.body.name)
-    if (user == null) {
-        return res.status(400).send('Cannot find user')
-    }
-    try {
-        if(await bcrypt.compare(req.body.password, user.password)) {
-            res.send("Success");
-        }
-        else {
-            res.send("Not allowed");
-        }
-    }
-    catch {
-        res.status(500).send();
-    }*/
-});
-
-app.use('/posts', articleRouter); 
-
 app.listen(port, async function() {
     console.log(`Example app listening at http://localhost:${port}`);
 });
+
+
 
 
 

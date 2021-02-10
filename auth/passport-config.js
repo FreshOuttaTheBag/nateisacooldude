@@ -1,32 +1,30 @@
 const LocalStrategy = require("passport-local").Strategy;
 const bcrpyt = require('bcrypt');
-const db = require("../db/index.js");
+const { User } = require("../db/model");
 
 async function getUserByUsername(username) {
-    const sql = 'SELECT "id", "username", "hash" FROM "Users" WHERE "username" = $1'
-    const vals = [username]
-    return new Promise(resolve => {
-        db.query(sql, vals, (err, response) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(response.rows[0]);
-            }
-        })
+    return new Promise(async (resolve,reject) => {
+        try 
+        {
+            const user = await User.findOne({ where: { username } })
+            resolve(user);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     })
 }
 
 async function getUserById(id) {
-    const sql = 'SELECT "id", "username", "hash" FROM "Users" WHERE "id" = $1'
-    const vals = [id]
-    return new Promise(resolve => {
-        db.query(sql, vals, (err, response) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(response.rows[0]);
-            }
-        })
+    return new Promise(async (resolve,reject) => {
+        try 
+        {
+            const user = await User.findByPk(id)
+            resolve(user);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     })
 }
 

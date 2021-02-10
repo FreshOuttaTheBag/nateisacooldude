@@ -3,10 +3,9 @@ const express = require("express");
 const app = express();
 const articleRouter = require('./routes/posts');
 const authRouter = require('./routes/auth');
-const db = require("./db/index.js");
+
 const favicon = require("serve-favicon");
 const methodOverride = require("method-override");
-
 
 const passport = require('passport')
 const initializePassport = require('./auth/passport-config');
@@ -31,30 +30,25 @@ app.set('view engine', 'ejs');
 app.use('/posts', articleRouter);
 app.use('/auth', authRouter);
 
-const port = 8000 || process.env.PORT;
+const db = require("./db/index.js");
+const { Post, User } = require('./db/model');
 
 app.get('/', (req, res) => {
-    try {
-        const sql = 'SELECT "title", "url", "content", "id" FROM public."Posts" ORDER BY "id" DESC;';
-        db.query(sql, (err, response) => {
-            if (err) {
-                console.log(err.stack);
-            }
-            else {
-                let user = undefined;
-                if (req.isAuthenticated())
-                {
-                    user = req.user;
-                }
-                res.render('posts/index', { posts: response.rows, user: user } );
-            }
-        });
-    }
-    catch (e) {
-        console.log(e);
-    }
+
+
+    Post.findAll({ order: [['id', 'DESC']] })
+    .then(posts => {
+        let user = undefined;
+        if (req.isAuthenticated())
+        {
+            user = req.user;
+        }
+        res.render('posts/index', { posts, user });
+    })
+    .catch(err => console.log(err));
 });
 
+const port = (8000 || process.env.PORT);
 app.listen(port, async function() {
     console.log(`Example app listening at http://localhost:${port}`);
 });

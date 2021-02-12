@@ -11,7 +11,7 @@
     
     <div class="row">
         <label for="title">Title</label>
-        <input type="text" name="title" id="title" class="form-control" maxlength="100" required>
+        <input type="text" name="title" id="title" class="form-control" maxlength="100" value="<%=post.title%>" required>
     </div>
 
     <div class="row">
@@ -24,12 +24,12 @@
             <a href="https://i.imgur.com/cHexWHi.gif">https://i.imgur.com/cHexWHi.gif</a> | <a href="/pages/posting-direct-image-links.html" class="text-danger">Still not working?</a>
         </div>
         
-        <input type="text" name="url" id="url" class="form-control" required>
+        <input type="text" name="url" id="url" class="form-control" value="<%=post.url%>" required>
     </div>
 
     <div class="row">
         <label for="content">Description</label>
-        <textarea  type="text" name="content" id="content" class="form-control" maxlength="1000" style="height:180px;"></textarea>
+        <textarea  type="text" name="content" id="content" class="form-control" maxlength="1000" style="height:180px;"><%=post.content%></textarea>
     </div>
 </div>
 <button type='submit' class="btn btn-primary" style="position: relative; right: 15px;">Submit!</button>

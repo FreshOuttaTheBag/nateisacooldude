@@ -1,7 +1,6 @@
 const Sequelize = require ('sequelize');
 const db = require('./index');
 
-
 const User = db.define('Users', {
     id: {
         type: Sequelize.BIGINT,
@@ -15,7 +14,6 @@ const User = db.define('Users', {
     },
     hash: Sequelize.TEXT
 });
-
 
 const Post = db.define('Posts', {
     id: {
@@ -31,12 +29,56 @@ const Post = db.define('Posts', {
     user_id: {
         type: Sequelize.BIGINT,
         allowNull: false,
-
+        references: {
+            model: User,
+            key: "id"
+        }
     }
 });
 
-Post.belongsTo(User, {
-    foreignKey: 'user_id'
+const PostLike = db.define('PostLikes', {
+    user_id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        references: {
+            model: User,
+            key: 'id'
+        }
+    },
+    post_id: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+        references: {
+            model: Post,
+            key: 'id'
+        }
+    }
 })
 
-module.exports = { Post, User };
+User.hasMany(Post, {
+    foreignKey: "user_id"
+})
+
+Post.belongsTo(User, {
+    foreignKey: "user_id"
+})
+
+Post.belongsToMany(User, {
+    as: "UsersThatLikedPost",
+    through: {
+        model: PostLike,
+        unique: false,
+    },
+    foreignKey: "post_id"
+})
+
+User.belongsToMany(Post, {
+    as: "PostsLikedByUser",
+    through: {
+        model: PostLike,
+        unique: false,
+    },
+    foreignKey: "user_id"
+})
+
+module.exports = { Post, User, PostLike };

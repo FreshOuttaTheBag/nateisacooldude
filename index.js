@@ -31,19 +31,17 @@ app.use('/posts', articleRouter);
 app.use('/auth', authRouter);
 
 const db = require("./db/index.js");
-const { Post, User } = require('./db/model');
+const { Post, User, PostLikes } = require('./db/model');
 
 app.get('/', (req, res) => {
-
-
-    Post.findAll({ order: [['id', 'DESC']] })
+    Post.findAll({ order: [['id', 'DESC']], include: "UsersThatLikedPost" })
     .then(posts => {
         let user = undefined;
         if (req.isAuthenticated())
         {
             user = req.user;
         }
-        res.render('posts/index', { posts, user });
+        res.render('posts/index', { posts, user});
     })
     .catch(err => console.log(err));
 });

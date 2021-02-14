@@ -5,9 +5,9 @@
         margin: 10px;
         border-radius: 15px;
         max-width: 100%;
-        max-height: 1000px;
+        max-height: 55vh;
         height: auto;
-        overflow-y: hidden;
+        overflow: hidden;
         transition: 0.5s;
     }
 
@@ -21,6 +21,7 @@
         border-bottom: solid 2px #CCCCCC;
         padding: 10px;
         height: auto;
+        max-height: 75vh;
         width: 100%;
         margin: 0px;
         transition: 0.4s;
@@ -31,6 +32,44 @@
 
     .box-hovered {
         background-color: #D8D8D8;
+    }
+
+    .like-button {
+        position: relative;
+        bottom: 2px
+    }
+
+    .cool-button {        
+       fill: #212529;
+       transition: 0.5s color linear;
+    }
+
+    .cool-button-clicked {
+        fill: #007bff;
+    }
+
+    .like-count {
+        width: auto;
+        min-width: 23px;
+
+        max-height: 25px;
+        height: auto;
+
+        margin: auto 10px 10px 4px;
+        padding: auto 10px auto 10px;
+
+        background-color: #1d8aff; 
+        border: 1px solid #007bff;
+        border-radius: 5px; 
+        text-align: center;
+        box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.2);
+        transform: scale(0.9,0.9);
+    }
+
+    .showcase-grid {
+        display: grid;
+        grid-template-rows: 1fr;
+        grid-template-columns: 25%  50% 25%;
     }
 
 </style>
@@ -54,18 +93,50 @@
     </a>  
 
     <div class="box" id="box" style="text-align: center;">
-        
-        <% if (postUserId === pageUserId) { %>
-            <a class="btn btn-primary" href="edit/<%=post.id%>" style="float: right; margin-left: -104.719px;">Edit this post</a>
-        <% } %>
-        <h1><%= post.title%></h1>
-        <% if (postUserId === pageUserId) { %>
-            <button class="btn btn-danger" onclick="$.post('/posts/<%=post.id%>?_method=DELETE', () => { window.location.replace('/') })" style="float: right; margin-left: -123.516px;">Delete this post</button>
-        <% } %>
-        <img src="<%= post.url%>" id="pageImage" onerror="this.onerror=null; this.src='/pictures/image-not-found.png'">
-        <h4><%= post.content%></h4>
+        <div class="showcase-grid">
+
+            <div>
+                &nbsp;
+            </div>
+
+            <div class="post">
+                <h1><%= post.title%></h1>
+                <img src="<%= post.url%>" id="pageImage" onerror="this.onerror=null; this.src='/pictures/image-not-found.png'">
+                <h4><%= post.content%></h4>
+            </div>
+
+            <div>
+                <!-- Like Button -->
+                <div class="d-flex flex-row-reverse">
+                    <div class="like-count"><%=post.UsersThatLikedPost.length%></div>
+                    <% if (user !== undefined && post.UsersThatLikedPost.map(usr => usr.id).includes(user.id)) { %> <!-- if the post is liked by the current user, probably an easier way to do this server-side -->
+                    <div class="cool-button-clicked">
+                    <% } else { %>
+                    <div class="cool-button" style="text-align: right">
+                    <% } %>
+                        <svg viewBox="-0.446 168.076 512 175.846" class="like-button" data-post-id="<%=post.id%>" xmlns="http://www.w3.org/2000/svg" width="52" height="24">
+                            <g transform="matrix(1, 0, 0, 1, -0.446382, 0)">
+                            <g>
+                                <path d="M503.467,236.343h-8.841c-3.132-38.161-35.132-68.267-74.086-68.267h-70.673h-5.385H167.518h-5.385H91.46 c-38.955,0-70.955,30.106-74.086,68.267H8.533c-4.719,0-8.533,3.823-8.533,8.533s3.814,8.533,8.533,8.533h8.533v16.119 c0,21.914,9.591,42.598,26.308,56.764c13.551,11.486,30.566,17.63,48.043,17.63c4.07,0,8.183-0.333,12.271-1.015l75.563-12.587 c34.586-5.769,59.682-35.396,59.682-70.451v-20.369c0-5.879-0.794-11.563-2.133-17.033c12.39-4.181,26.01-4.181,38.4,0 c-1.34,5.47-2.133,11.153-2.133,17.033v20.369c0,35.055,25.097,64.683,59.682,70.451l75.563,12.587 c4.087,0.683,8.201,1.015,12.271,1.015c17.476,0,34.492-6.153,48.043-17.63c16.717-14.165,26.308-34.85,26.308-56.764V253.41 h8.533c4.719,0,8.533-3.823,8.533-8.533S508.186,236.343,503.467,236.343z M91.46,219.277c-12.791,0-23.194,10.402-23.194,23.194 c0,4.71-3.814,8.533-8.533,8.533s-8.533-3.823-8.533-8.533c0-22.204,18.057-40.26,40.26-40.26c4.719,0,8.533,3.823,8.533,8.533 S96.179,219.277,91.46,219.277z M281.216,206.468c-16.247-5.606-34.185-5.606-50.441,0c-4.275-8.166-10.086-15.394-17.041-21.325 h84.531C291.311,191.074,285.5,198.302,281.216,206.468z"/>
+                            </g>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Edit & Delete Buttons -->
+                <% if (user && (postUserId === user.id)) { %>
+                    <div style="text-align: right;">
+                        <a class="btn btn-primary" href="edit/<%=post.id%>" style="margin-bottom: 10px">Edit this post</a>
+                        <br>
+                        <button class="btn btn-danger" onclick="$.post('/posts/<%=post.id%>?_method=DELETE', () => { window.location.replace('/') })">Delete this post</button>
+                    </div>                   
+                <% } %>
+            </div>
+        </div>
     </div>
 
+    <!-- All posts shown below showcase -->
     <div class="row justify-content-center">
         <%- include("_post_cards")%>
     </div>
